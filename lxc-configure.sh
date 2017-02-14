@@ -67,7 +67,9 @@ fi
 
 aptitude install -y unattended-upgrades apt-listchanges iso-codes
 sed -ri 's_//(Unattended-Upgrade::Mail .*)$_\1_' /etc/apt/apt.conf.d/50unattended-upgrades
-cat << EOF > /etc/apt/apt.conf.d/20auto-upgrades
+if [ ! -f "/etc/apt/apt.conf.d/20auto-upgrades" ]; then
+	cat << EOF > /etc/apt/apt.conf.d/20auto-upgrades
 APT::Periodic::Update-Package-Lists "1";
 APT::Periodic::Unattended-Upgrade "1";
 EOF
+fi

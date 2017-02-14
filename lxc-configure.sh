@@ -7,6 +7,9 @@ set -x
 # Define default values
 LXC_CREATE_USER_SHELL=/bin/bash
 LXC_CREATE_TOOLS=""
+LXC_APT_CACHER=""
+LXC_CREATE_USER=""
+LXC_CREATE_SMTP_RELAY=""
 
 # Load personal config if it exists
 [ ! -f /tmp/lxc-configrc ] || . /tmp/lxc-configrc
@@ -19,16 +22,15 @@ passwd -l root
 
 # Configure APT
 cat << EOF >> /etc/apt/sources.list
-deb http://security.debian.org/ jessie/updates main
-deb http://ftp.fr.debian.org/debian/ jessie-updates main
+deb http://ftp.fr.debian.org/debian/ $(lsb_release --codename --short)-updates main
 EOF
 cat << EOF > /etc/apt/apt.conf.d/01norecommends
 APT::Install-Recommends "false";
 APT::Install-Suggests "false";
 EOF
-cat << EOF > /etc/apt/apt.conf.d/02apt-cacher
-Acquire::http { Proxy "http://apt-cacher:3142"; };
-EOF
+if [ -n "$LXC_APT_CACHER" ]; then
+	echo "Acquire::http { Proxy \"http://$LXC_APT_CACHER:3142\"; };" > /etc/apt/apt.conf.d/02apt-cacher
+fi
 apt-get update
 apt-get install -y aptitude
 

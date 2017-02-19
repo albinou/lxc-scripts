@@ -4,19 +4,24 @@ set -e
 set -u
 set -x
 
-NAME=$1
-IP=""
-GW=""
-if [ $# -gt 1 ]; then
-	IP=$2
-	GW=$3
-fi
+# Define default configuration values
+LXC_ARCH="x86_64"
+LXC_SUITE="jessie"
+LXC_DEBIAN_MIRROR="http://ftp.fr.debian.org/debian"
+LXC_DEBIAN_SECURITY_MIRROR="http://security.debian.org"
 
 # Load personal config if it exists
 [ ! -f $(dirname $0)/lxc-configrc ] || . $(dirname $0)/lxc-configrc
 
-ARCH=${ARCH:=x86_64}
-SUITE=${SUITE:=jessie}
+NAME="$1"
+IP=""
+GW="${LXC_NETWORK_GW:=\"\"}"
+if [ $# -gt 1 ]; then
+	IP="$2"
+fi
+if [ $# -gt 2 ]; then
+	GW="$3"
+fi
 
 # Set umask so that anyone can read created files
 umask 022
@@ -35,9 +40,10 @@ fi
 
 # Create and configure LXC
 lxc-create -n $NAME --dir /srv/lxc/$NAME -t debian -f /tmp/lxc.conf -- \
-	--arch=$ARCH --release=$SUITE \
-	--mirror="http://ftp.fr.debian.org/debian" \
-	--security-mirror="http://security.debian.org"
+	--arch="$LXC_ARCH"                                             \
+	--release="$LXC_SUITE"                                         \
+	--mirror="$LXC_DEBIAN_MIRROR"                                  \
+	--security-mirror="$LXC_DEBIAN_SECURITY_MIRROR"
 rmdir /var/lib/lxc/$NAME/rootfs
 chmod go+rx /var/lib/lxc/$NAME
 chmod go+r /var/lib/lxc/$NAME/*

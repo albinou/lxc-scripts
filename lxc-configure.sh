@@ -4,7 +4,7 @@ set -e
 set -u
 set -x
 
-# Define default values
+# Define default configuration values
 LXC_CREATE_USER_SHELL=/bin/bash
 LXC_CREATE_TOOLS=""
 LXC_APT_CACHER=""
@@ -12,7 +12,7 @@ LXC_CREATE_USER=""
 LXC_CREATE_SMTP_RELAY=""
 
 # Load personal config if it exists
-[ ! -f /tmp/lxc-configrc ] || . /tmp/lxc-configrc
+[ ! -f $(dirname $0)/lxc-configrc ] || . $(dirname $0)/lxc-configrc
 
 # Set umask so that anyone can read created files
 umask 022

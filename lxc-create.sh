@@ -39,11 +39,10 @@ if [ -n "$GW" ]; then
 fi
 
 # Create and configure LXC
-lxc-create -n $NAME --dir /srv/lxc/$NAME -t debian -f /tmp/lxc.conf -- \
+export MIRROR=$LXC_DEBIAN_MIRROR
+lxc-create -n $NAME --dir /srv/lxc/$NAME -t /tmp/lxc-debian -f /tmp/lxc.conf -- \
 	--arch="$LXC_ARCH"                                             \
-	--release="$LXC_SUITE"                                         \
-	--mirror="$LXC_DEBIAN_MIRROR"                                  \
-	--security-mirror="$LXC_DEBIAN_SECURITY_MIRROR"
+	--release="$LXC_SUITE"
 rmdir /var/lib/lxc/$NAME/rootfs
 chmod go+rx /var/lib/lxc/$NAME
 chmod go+r /var/lib/lxc/$NAME/*

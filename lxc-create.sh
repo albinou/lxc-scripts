@@ -6,7 +6,7 @@ set -x
 
 # Define default configuration values
 LXC_ARCH="x86_64"
-LXC_SUITE="jessie"
+LXC_SUITE="stretch"
 LXC_DEBIAN_MIRROR="http://ftp.fr.debian.org/debian"
 LXC_DEBIAN_SECURITY_MIRROR="http://security.debian.org"
 

@@ -21,6 +21,7 @@ umask 022
 passwd -l root
 
 # Configure APT
+apt-get install -y lsb-release
 cat << EOF >> /etc/apt/sources.list
 deb http://ftp.fr.debian.org/debian/ $(lsb_release --codename --short)-updates main
 EOF

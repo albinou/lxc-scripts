@@ -68,7 +68,6 @@ if [ -z "$IP" ]; then
 fi
 cp $(dirname $0)/lxc-configure.sh /srv/lxc/$NAME/tmp/
 cp $(dirname $0)/lxc-configrc /srv/lxc/$NAME/tmp/ || true
-#lxc-attach -n $NAME -- /tmp/lxc-configure.sh
-lxc-attach -n $NAME
+lxc-attach -n $NAME -- /tmp/lxc-configure.sh
 rm -f /srv/lxc/$NAME/tmp/lxc-configrc
 rm -f /srv/lxc/$NAME/tmp/lxc-configure.sh

@@ -20,6 +20,12 @@ umask 022
 # Disable root authentication
 passwd -l root
 
+# Enable SSH socket
+systemctl stop ssh.service
+systemctl disable ssh.service
+systemctl enable ssh.socket
+systemctl start ssh.socket
+
 # Configure APT
 apt-get install -y lsb-release
 cat << EOF >> /etc/apt/sources.list

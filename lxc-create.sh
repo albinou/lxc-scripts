@@ -60,6 +60,12 @@ figlet -w 80 "/*  $NAME  */" > /srv/lxc/$NAME/etc/motd
 sed -ri 's/^(UMASK[[:space:]]+)[[:digit:]]+$/\1077/' /srv/lxc/$NAME/etc/login.defs
 sed -ri 's/^(# end of pam-auth-update config)$/session\toptional\tpam_umask.so \n\1/' /srv/lxc/$NAME/etc/pam.d/common-session
 
+# Secure SSH
+if [ -n "$LXC_SSH_SECURED" -a "$LXC_SSH_SECURED" = "true" ]; then
+	sed -ri 's/^#(PasswordAuthentication) yes$/\1 no/;
+	         s/^#(PermitRootLogin) prohibit-password$/\1 no/' /srv/lxc/$NAME/etc/ssh/sshd_config
+fi
+
 # Run LXC and install packages
 lxc-start -d -n $NAME
 sleep 5

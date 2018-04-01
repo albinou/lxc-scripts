@@ -94,3 +94,8 @@ _lxc-create.sh_ usage is the following:
 ### LXC_CREATE_SMTP_RELAY
 
 * Optional
+
+### LXC_SSH_SECURED
+
+* Optional
+* Default value: `false`

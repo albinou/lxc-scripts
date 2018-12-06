@@ -41,6 +41,14 @@ fi
 apt-get update
 apt-get install -y aptitude
 
+# Set $HOME if unset because some git commands may fail
+if ! [[ -v HOME ]]; then
+	export HOME="/root"
+fi
+
+aptitude install -y git
+git config --global user.email "root@$(hostname)"
+git config --global user.name "Root"
 aptitude install -y etckeeper
 
 # Install tools

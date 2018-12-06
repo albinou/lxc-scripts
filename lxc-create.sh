@@ -27,15 +27,15 @@ fi
 umask 022
 
 cat << EOF > /tmp/lxc.conf
-lxc.network.type = veth
-lxc.network.flags = up
-lxc.network.link = $LXC_NETWORK_BRIDGE
+lxc.net.0.type = veth
+lxc.net.0.flags = up
+lxc.net.0.link = $LXC_NETWORK_BRIDGE
 EOF
 if [ -n "$IP" ]; then
-	echo "lxc.network.ipv4 = $IP" >> /tmp/lxc.conf
+	echo "lxc.net.0.ipv4.address = $IP" >> /tmp/lxc.conf
 fi
 if [ -n "$GW" ]; then
-	echo "lxc.network.ipv4.gateway = $GW" >> /tmp/lxc.conf
+	echo "lxc.net.0.ipv4.gateway = $GW" >> /tmp/lxc.conf
 fi
 
 # Create and configure LXC
@@ -74,6 +74,6 @@ if [ -z "$IP" ]; then
 fi
 cp $(dirname $0)/lxc-configure.sh /srv/lxc/$NAME/tmp/
 cp $(dirname $0)/lxc-configrc /srv/lxc/$NAME/tmp/ || true
-lxc-attach -n $NAME -- /tmp/lxc-configure.sh
+lxc-attach -n $NAME --clear-env -- /tmp/lxc-configure.sh
 rm -f /srv/lxc/$NAME/tmp/lxc-configrc
 rm -f /srv/lxc/$NAME/tmp/lxc-configure.sh
